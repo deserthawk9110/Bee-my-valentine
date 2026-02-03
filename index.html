@@ -19,11 +19,10 @@
 
         h1 { color: #d32f2f; margin-top: 20px; z-index: 5; pointer-events: none; position: absolute; top: 10%; }
 
-        /* The Container keeps them separated */
         .game-area {
             display: flex;
             width: 80%;
-            justify-content: space-between; /* This forces one left, one right */
+            justify-content: space-between;
             align-items: center;
             max-width: 800px;
         }
@@ -34,15 +33,15 @@
             align-items: center;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 10;
-            transform-origin: left center; /* Grows toward the right */
+            transform-origin: left center;
         }
 
         .girl-bee { font-size: 50px; margin-bottom: -10px; }
 
         #yesBtn {
-            background-color: #ffb74d;
-            border: 4px dashed #e65100;
-            color: #5d4037;
+            background-color: #FFD700; /* Gold Color */
+            border: 4px dashed #B8860B;
+            color: black; /* Black Text */
             padding: 15px 30px;
             font-size: 20px;
             font-weight: bold;
@@ -56,15 +55,15 @@
             align-items: center;
             transition: all 0.2s ease;
             z-index: 20;
-            position: relative; /* Starts in the flexbox, then goes absolute */
+            position: relative;
         }
 
         .boy-bee { font-size: 40px; margin-right: -5px; }
 
         #noBtn {
-            background-color: #cfd8dc;
-            border: 4px dashed #546e7a;
-            color: #37474f;
+            background-color: #ff4d4d; /* Nice Red Color */
+            border: 4px dashed #b30000;
+            color: black; /* Black Text */
             padding: 10px 20px;
             font-size: 18px;
             border-radius: 50px;
@@ -97,24 +96,20 @@
             const boyBee = document.getElementById('boyBee');
             const yesWrap = document.getElementById('yesWrapper');
 
-            // Switch to absolute positioning only on first move
             if (!moved) {
                 noWrap.style.position = 'absolute';
                 moved = true;
             }
 
-            // Move the No button to a random spot
             const x = Math.random() * (window.innerWidth - 180);
             const y = Math.random() * (window.innerHeight - 100);
             
             noWrap.style.left = x + 'px';
             noWrap.style.top = y + 'px';
 
-            // Visual feedback
             boyBee.innerText = "🐝💨";
             setTimeout(() => { boyBee.innerText = "🐝"; }, 400);
 
-            // Grow the Yes button
             yesScale += 0.3;
             yesWrap.style.transform = `scale(${yesScale})`;
         }
