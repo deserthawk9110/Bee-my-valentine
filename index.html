@@ -13,23 +13,32 @@
             align-items: center;
             justify-content: center;
             background-color: #fff0f3;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-family: 'Arial', sans-serif;
             overflow: hidden;
         }
 
-        h1 { color: #d32f2f; margin-bottom: 50px; text-align: center; }
+        h1 { color: #d32f2f; margin-top: 20px; z-index: 5; pointer-events: none; position: absolute; top: 10%; }
 
-        .container { position: relative; width: 100%; height: 400px; display: flex; justify-content: center; align-items: center; }
+        /* The Container keeps them separated */
+        .game-area {
+            display: flex;
+            width: 80%;
+            justify-content: space-between; /* This forces one left, one right */
+            align-items: center;
+            max-width: 800px;
+        }
 
-        /* The Girl Bee & Yes Button */
         #yesWrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: all 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 10;
+            transform-origin: left center; /* Grows toward the right */
         }
-        .girl-bee { font-size: 40px; margin-bottom: -10px; z-index: 11; }
+
+        .girl-bee { font-size: 50px; margin-bottom: -10px; }
+
         #yesBtn {
             background-color: #ffb74d;
             border: 4px dashed #e65100;
@@ -37,78 +46,85 @@
             padding: 15px 30px;
             font-size: 20px;
             font-weight: bold;
-            border-radius: 20px;
+            border-radius: 50px;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        /* The Boy Bee & No Button */
         #noWrapper {
-            position: absolute;
             display: flex;
             align-items: center;
-            transition: 0.1s linear;
-            margin-left: 200px; /* Initial gap */
+            transition: all 0.2s ease;
+            z-index: 20;
+            position: relative; /* Starts in the flexbox, then goes absolute */
         }
+
         .boy-bee { font-size: 40px; margin-right: -5px; }
+
         #noBtn {
             background-color: #cfd8dc;
             border: 4px dashed #546e7a;
             color: #37474f;
-            padding: 15px 30px;
-            font-size: 20px;
-            font-weight: bold;
-            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 50px;
             cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <h1 id="question">Will you bee my Valentine? 🍯</h1>
+    <h1>Will you bee my Valentine? 🍯</h1>
 
-    <div class="container">
+    <div class="game-area">
         <div id="yesWrapper">
             <div class="girl-bee">🐝🌸</div>
             <button id="yesBtn" onclick="celebrate()">Yes</button>
         </div>
 
         <div id="noWrapper" onmouseover="moveNo()">
-            <div class="boy-bee">🐝</div>
+            <div class="boy-bee" id="boyBee">🐝</div>
             <button id="noBtn">No</button>
         </div>
     </div>
 
     <script>
         let yesScale = 1;
+        let moved = false;
         
         function moveNo() {
             const noWrap = document.getElementById('noWrapper');
+            const boyBee = document.getElementById('boyBee');
             const yesWrap = document.getElementById('yesWrapper');
-            const boyBee = document.querySelector('.boy-bee');
 
-            // 1. Move the No button randomly
-            const x = Math.random() * (window.innerWidth - 200);
-            const y = Math.random() * (window.innerHeight - 150);
+            // Switch to absolute positioning only on first move
+            if (!moved) {
+                noWrap.style.position = 'absolute';
+                moved = true;
+            }
+
+            // Move the No button to a random spot
+            const x = Math.random() * (window.innerWidth - 180);
+            const y = Math.random() * (window.innerHeight - 100);
+            
             noWrap.style.left = x + 'px';
             noWrap.style.top = y + 'px';
-            noWrap.style.position = 'fixed';
-            noWrap.style.margin = '0';
 
-            // 2. Make the Boy Bee look like he's pushing/reacting
-            boyBee.innerText = "🐝💨"; 
-            setTimeout(() => { boyBee.innerText = "🐝"; }, 300);
+            // Visual feedback
+            boyBee.innerText = "🐝💨";
+            setTimeout(() => { boyBee.innerText = "🐝"; }, 400);
 
-            // 3. Grow the Yes button and the Girl Bee
-            yesScale += 0.2;
+            // Grow the Yes button
+            yesScale += 0.3;
             yesWrap.style.transform = `scale(${yesScale})`;
         }
 
         function celebrate() {
             document.body.innerHTML = `
-                <div style="text-align:center;">
-                    <h1 style="font-size: 50px;">Un-bee-lievable! ❤️</h1>
+                <div style="text-align:center; animation: fadeIn 1s; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+                    <h1 style="font-size: 50px; position: relative;">Un-bee-lievable! ❤️</h1>
                     <div style="font-size: 100px;">🐝💕🐝</div>
-                    <p style="font-size: 24px; color: #d32f2f;">See you on the 14th!</p>
+                    <p style="font-size: 24px; color: #d32f2f;">I'll buzz over to see you soon!</p>
                 </div>
             `;
         }
