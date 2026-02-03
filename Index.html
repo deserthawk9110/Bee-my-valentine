@@ -1,1 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you bee mine?</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff0f3;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            overflow: hidden;
+        }
 
+        h1 { color: #d32f2f; margin-bottom: 50px; text-align: center; }
+
+        .container { position: relative; width: 100%; height: 400px; display: flex; justify-content: center; align-items: center; }
+
+        /* The Girl Bee & Yes Button */
+        #yesWrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        .girl-bee { font-size: 40px; margin-bottom: -10px; z-index: 11; }
+        #yesBtn {
+            background-color: #ffb74d;
+            border: 4px dashed #e65100;
+            color: #5d4037;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        /* The Boy Bee & No Button */
+        #noWrapper {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            transition: 0.1s linear;
+            margin-left: 200px; /* Initial gap */
+        }
+        .boy-bee { font-size: 40px; margin-right: -5px; }
+        #noBtn {
+            background-color: #cfd8dc;
+            border: 4px dashed #546e7a;
+            color: #37474f;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="question">Will you bee my Valentine? 🍯</h1>
+
+    <div class="container">
+        <div id="yesWrapper">
+            <div class="girl-bee">🐝🌸</div>
+            <button id="yesBtn" onclick="celebrate()">Yes</button>
+        </div>
+
+        <div id="noWrapper" onmouseover="moveNo()">
+            <div class="boy-bee">🐝</div>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <script>
+        let yesScale = 1;
+        
+        function moveNo() {
+            const noWrap = document.getElementById('noWrapper');
+            const yesWrap = document.getElementById('yesWrapper');
+            const boyBee = document.querySelector('.boy-bee');
+
+            // 1. Move the No button randomly
+            const x = Math.random() * (window.innerWidth - 200);
+            const y = Math.random() * (window.innerHeight - 150);
+            noWrap.style.left = x + 'px';
+            noWrap.style.top = y + 'px';
+            noWrap.style.position = 'fixed';
+            noWrap.style.margin = '0';
+
+            // 2. Make the Boy Bee look like he's pushing/reacting
+            boyBee.innerText = "🐝💨"; 
+            setTimeout(() => { boyBee.innerText = "🐝"; }, 300);
+
+            // 3. Grow the Yes button and the Girl Bee
+            yesScale += 0.2;
+            yesWrap.style.transform = `scale(${yesScale})`;
+        }
+
+        function celebrate() {
+            document.body.innerHTML = `
+                <div style="text-align:center;">
+                    <h1 style="font-size: 50px;">Un-bee-lievable! ❤️</h1>
+                    <div style="font-size: 100px;">🐝💕🐝</div>
+                    <p style="font-size: 24px; color: #d32f2f;">See you on the 14th!</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
